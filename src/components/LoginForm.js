@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import AuthMessage, { AuthContext } from "./AuthMessage";
 import "../styles.css";
 
@@ -65,6 +66,9 @@ const LoginForm = () => {
           />
           <button type="submit" className="enroll-button">Login</button>
           <p className="forgot">Forgot Password?</p>
+          <p style={{ marginTop: '15px' }}>
+            <Link to="/signup" id="signup">Don't have an account? Sign Up</Link>
+          </p>
         </form>
       </div>
     </AuthContext.Provider>
