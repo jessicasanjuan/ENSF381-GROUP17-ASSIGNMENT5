@@ -13,5 +13,5 @@ const SignupPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
 
