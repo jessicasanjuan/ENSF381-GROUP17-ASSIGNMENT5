@@ -311,11 +311,13 @@ footer
     justify-content: center;
     flex-direction: column;
     background-color: #d4d4d4;
+    text-align: center;
     padding: 30px;
     margin-left: 150px;
     margin-right: 150px;
     border-radius: 30px;
     box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1), 1px 1px 3px rgba(0, 0, 0, 0.06);
+    
 }
 
 #forgot-password
@@ -573,4 +575,37 @@ table, th, td
 {
     border: 1px black solid;
     background-color: #ffffff;
+}
+
+/* Extra styles for sign-up page */
+.signup-button
+{
+    background-color: #4CAF50;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
+    opacity: 0.5;
+    height: 35px;
+    width: 80px;
+    align-self: center;
+    color: white;
+}
+.signup-button:hover
+{
+    background-color: #45A049;
+    opacity: 1.0;
+}
+
+.reg-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.reg-form {
+  margin-top: 20px;
 }
