@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import "../styles.css";
 
 function RegForm() {
@@ -43,11 +42,23 @@ function RegForm() {
   };
 
   const handleSubmit = async (e) => {
+    const backendEndpoint = 'http://localhost:5000/register';
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post('http://localhost:5000/register', formData);
-        navigate('/login');
+        await fetch(backendEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData),
+        })
+        .then(response => { return response.json(); })
+        .then(data => {
+          console.log(data.message);
+          navigate('/login');
+      })
+        
       } catch (err) {
         if (err.response && err.response.status === 409) {
           setErrors([err.response.data.message]);
@@ -87,10 +98,3 @@ function RegForm() {
 }
 
 export default RegForm;
-
-
-/* old unordered list approach (changed to eliminate bullet points)
-<ul>
-{errors.map((err, idx) => <li key={idx}>{err}</li>)}
-</ul>
-*/

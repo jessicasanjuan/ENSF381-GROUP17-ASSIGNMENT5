@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS # type: ignore
 import json
-import random
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend-backend communication
@@ -53,17 +52,16 @@ def login():
 
 @app.route('/testimonials', methods=['GET'])
 def get_testimonials():
-    return jsonify(random.sample(testimonials_data, 2))
+    return testimonials_data
 
 @app.route('/enroll/<int:student_id>', methods=['POST'])
 def enroll_course(student_id):
     data = request.get_json()
-    course = data.get('course')
 
     for student in students:
         if student['id'] == student_id:
-            if course not in student['enrolled_courses']:
-                student['enrolled_courses'].append(course)
+            if data not in student['enrolled_courses']:
+                student['enrolled_courses'].append(data)
                 return jsonify({"message": "Enrolled successfully."}), 200
             else:
                 return jsonify({"message": "Already enrolled."}), 400
@@ -73,12 +71,11 @@ def enroll_course(student_id):
 @app.route('/drop/<int:student_id>', methods=['DELETE'])
 def drop_course(student_id):
     data = request.get_json()
-    course = data.get('course')
 
     for student in students:
         if student['id'] == student_id:
-            if course in student['enrolled_courses']:
-                student['enrolled_courses'].remove(course)
+            if data in student['enrolled_courses']:
+                student['enrolled_courses'].remove(data)
                 return jsonify({"message": "Course dropped successfully."}), 200
             else:
                 return jsonify({"message": "Course not found in enrolled list."}), 400
@@ -87,7 +84,7 @@ def drop_course(student_id):
 
 @app.route('/courses', methods=['GET'])
 def get_courses():
-    return jsonify(courses_data)
+    return courses_data
 
 @app.route('/student_courses/<int:student_id>', methods=['GET'])
 def get_student_courses(student_id):
@@ -98,4 +95,4 @@ def get_student_courses(student_id):
     return jsonify([])
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

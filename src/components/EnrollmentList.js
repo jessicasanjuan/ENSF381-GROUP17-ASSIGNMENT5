@@ -3,27 +3,30 @@ import EnrolledCourse from "./EnrolledCourse";
 
 const EnrollmentList = () => {
   const [enrolled, setEnrolled] = useState([]);
+  const id = 1;
 
   useEffect(() => {
-    const stored = localStorage.getItem("enrollments");
-    if (stored) setEnrolled(JSON.parse(stored));
-
-    const handleStorageChange = () => {
-      const updated = localStorage.getItem("enrollments");
-      if (updated) setEnrolled(JSON.parse(updated));
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    fetch(`http://localhost:5000/student_courses/${id}`)
+    .then(response => { return response.json(); })
+    .then(data => {
+      setEnrolled(data)
+  })
+  .catch(error => console.log('Error.'));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("enrollments", JSON.stringify(enrolled));
-  }, [enrolled]);
-
   const handleDrop = (course) => {
-    const updated = enrolled.filter((c) => c.id !== course.id);
-    setEnrolled(updated);
+    fetch(`http://localhost:5000/drop/${window.student_id}`, {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(course),
+    })
+    .then(response => { return response.json(); })
+    .then(data => {
+      const updated = enrolled.filter((c) => c.id !== course.id);
+      setEnrolled(updated);
+      console.log(data.message)
+  })
+  .catch(error => console.log('Error.'));
   };
 
   // assuming 3 hours a week

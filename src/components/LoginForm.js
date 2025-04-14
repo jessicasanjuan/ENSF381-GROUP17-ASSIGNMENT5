@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { createContext } from 'react';
 import AuthMessage, { AuthContext } from "./AuthMessage";
 import "../styles.css";
+
+export const idContext = createContext(null);
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -25,23 +28,22 @@ const LoginForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-
-    try {
-      const res = await fetch("https://jsonplaceholder.typicode.com/users");
-      const users = await res.json();
-      const user = users.find(
-        (u) => u.username === username && u.email === password
-      );
-
-      if (user) {
-        setAuthStatus({ type: "success", message: "Login successful! Redirecting..." });
-        setTimeout(() => navigate("/courses"), 2000);
-      } else {
-        setAuthStatus({ type: "error", message: "Invalid credentials." });
-      }
-    } catch (err) {
-      setAuthStatus({ type: "error", message: "Login failed. Please try again." });
-    }
+      await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({'username':username, 'password':password}),
+      })
+      .then(response => {
+        if (response.ok) {
+          navigate('/courses');
+          return response.json();
+        }
+        else throw new Error('Authentication failed');
+      })
+      .then(data => {
+        setAuthStatus(data.message);
+  })
+      .catch(error => setAuthStatus('Authentication failed. Incorrect username or password.'));
   };
 
   return (
