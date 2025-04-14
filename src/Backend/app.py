@@ -1,3 +1,8 @@
+# DEVELOPED BY
+# ARMANDO ACOSTA (UCID 30209759)
+# JESSICA SAN JUAN (UCID 30003453)
+
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS # type: ignore
 import json
